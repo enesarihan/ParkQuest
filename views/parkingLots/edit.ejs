@@ -1,0 +1,69 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+  <h1 class="text-center">New Campground</h1>
+  <div class="col-6 offset-3">
+    <form action="/parkingLots/<%= parkingLot._id %>?_method=PUT" method="post">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="parkingLot[title]"
+          value="<%= parkingLot.title %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="title" class="form-label">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="parkingLot[location]"
+          value="<%= parkingLot.location %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image Url</label>
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="parkingLot[image]"
+          value="<%= parkingLot.image %>"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          name="parkingLot[description]"
+          id="description"
+          class="form-control"
+        >
+        <%= parkingLot.description %>
+        </textarea>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Parking Lot Price Hourly</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">$</span>
+          <input
+            id="price"
+            name="parkingLot[price]"
+            type="text"
+            class="form-control"
+            placeholder="0.00"
+            aria-label="price"
+            aria-describedby="basic-addon1"
+            value="<%= parkingLot.price %>"
+          />
+        </div>
+      </div>
+      <div class="mb-3 align-center justify-center mx-auto">
+        <button class="btn btn-info">Edit Parking Lot</button>
+      </div>
+    </form>
+    <a href="/parkingLots">All Parking Lots</a>
+    <a href="/parkingLots/<%= parkingLot._id %>">Back to Parking Lot</a>
+  </div>
+</div>

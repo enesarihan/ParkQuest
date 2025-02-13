@@ -1,0 +1,31 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3">
+      <img src="<%= parkingLot.image %>" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= parkingLot.title %></h5>
+        <p class="card-text"><%= parkingLot.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= parkingLot.location %></li>
+        <li class="list-group-item">Price :$<%= parkingLot.price %>/hourly</li>
+      </ul>
+      <div class="card-body">
+        <a class="btn btn-warning" href="/parkingLots/<%= parkingLot._id%>/edit"
+          >Edit</a
+        >
+        <form
+          class="d-inline"
+          action="/parkingLots/<%= parkingLot._id %>?_method=DELETE"
+          method="post"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">
+        <a href="/parkingLots">All Parking Lots</a>
+      </div>
+    </div>
+  </div>
+</div>
