@@ -2,7 +2,12 @@
 <div class="row">
   <h1 class="text-center">New Campground</h1>
   <div class="col-6 offset-3">
-    <form action="/parkingLots/<%= parkingLot._id %>?_method=PUT" method="post">
+    <form
+      action="/parkingLots/<%= parkingLot._id %>?_method=PUT"
+      method="post"
+      novalidate
+      class="validated-form"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -11,7 +16,9 @@
           id="title"
           name="parkingLot[title]"
           value="<%= parkingLot.title %>"
+          required
         />
+        <div class="valid-feedback">Looks good !</div>
       </div>
       <div class="mb-3">
         <label for="title" class="form-label">Location</label>
@@ -21,7 +28,9 @@
           id="location"
           name="parkingLot[location]"
           value="<%= parkingLot.location %>"
+          required
         />
+        <div class="valid-feedback">Looks good !</div>
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Image Url</label>
@@ -31,7 +40,9 @@
           id="image"
           name="parkingLot[image]"
           value="<%= parkingLot.image %>"
+          required
         />
+        <div class="valid-feedback">Looks good !</div>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
@@ -56,7 +67,9 @@
             aria-label="price"
             aria-describedby="basic-addon1"
             value="<%= parkingLot.price %>"
+            required
           />
+          <div class="valid-feedback">Looks good !</div>
         </div>
       </div>
       <div class="mb-3 align-center justify-center mx-auto">
