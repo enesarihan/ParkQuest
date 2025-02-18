@@ -6,9 +6,10 @@ const methodOverride = require("method-override");
 const Joi = require("joi");
 const port = 3000;
 const ParkingLot = require("./models/parkingLot");
+const Review = require("./models/review");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
-const { parkingLotSchema } = require("./schemas");
+const { parkingLotSchema, reviewSchema } = require("./schemas");
 
 mongoose.connect("mongodb://localhost:27017/park-quest");
 
@@ -36,6 +37,15 @@ const validateParkingLot = (req, res, next) => {
     next();
   }
 };
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -55,8 +65,6 @@ app.post(
   "/parkingLots",
   validateParkingLot,
   catchAsync(async (req, res) => {
-    // if (!req.body.parkingLot)
-    //   throw new ExpressError("Invalid Parking lot Data", 400);
     const parkingLot = new ParkingLot(req.body.parkingLot);
     await parkingLot.save();
     res.redirect(`/parkingLots/${parkingLot._id}`);
@@ -67,7 +75,7 @@ app.get(
   "/parkingLots/:id",
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const parkingLot = await ParkingLot.findById(id);
+    const parkingLot = await ParkingLot.findById(id).populate("reviews");
     res.render("parkingLots/show", { parkingLot });
   })
 );
@@ -104,6 +112,30 @@ app.delete(
     const { id } = req.params;
     await ParkingLot.findByIdAndDelete(id);
     res.redirect("/parkingLots");
+  })
+);
+
+app.post(
+  "/parkingLots/:id/reviews",
+  validateReview,
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const parkingLot = await ParkingLot.findById(id);
+    const review = new Review(req.body.review);
+    parkingLot.reviews.push(review);
+    await review.save();
+    await parkingLot.save();
+    res.redirect(`/parkingLots/${parkingLot._id}`);
+  })
+);
+
+app.delete(
+  "/parkingLots/:id/reviews/:reviewId",
+  catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await ParkingLot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/parkingLots/${id}`);
   })
 );
 
