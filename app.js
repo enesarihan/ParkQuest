@@ -1,15 +1,18 @@
 const express = require("express");
 const path = require("path");
+
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
+const session = require("express-session");
+const flash = require("connect-flash");
+
 const methodOverride = require("method-override");
-const Joi = require("joi");
 const port = 3000;
-const ParkingLot = require("./models/parkingLot");
-const Review = require("./models/review");
-const catchAsync = require("./utils/catchAsync");
+
 const ExpressError = require("./utils/ExpressError");
-const { parkingLotSchema, reviewSchema } = require("./schemas");
+
+const parkingLots = require("./routes/parkingLot");
+const reviews = require("./routes/review");
 
 mongoose.connect("mongodb://localhost:27017/park-quest");
 
@@ -27,117 +30,32 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, "public")));
+const sessionConfig = {
+  secret: "cocacola",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+app.use(session(sessionConfig));
+app.use(flash("success"));
 
-const validateParkingLot = (req, res, next) => {
-  const { error } = parkingLotSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
+app.use("/parkingLots", parkingLots);
+app.use("/parkingLots/:id/reviews", reviews);
 
 app.get("/", (req, res) => {
   res.render("home");
 });
-app.get(
-  "/parkingLots",
-  catchAsync(async (req, res) => {
-    const parkingLots = await ParkingLot.find({});
-    res.render("parkingLots/index", { parkingLots });
-  })
-);
-
-app.get("/parkingLots/new", (req, res) => {
-  res.render("parkingLots/new");
-});
-app.post(
-  "/parkingLots",
-  validateParkingLot,
-  catchAsync(async (req, res) => {
-    const parkingLot = new ParkingLot(req.body.parkingLot);
-    await parkingLot.save();
-    res.redirect(`/parkingLots/${parkingLot._id}`);
-  })
-);
-
-app.get(
-  "/parkingLots/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const parkingLot = await ParkingLot.findById(id).populate("reviews");
-    res.render("parkingLots/show", { parkingLot });
-  })
-);
-
-app.get(
-  "/parkingLots/:id/edit",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const parkingLot = await ParkingLot.findById(id);
-    res.render("parkingLots/edit", { parkingLot });
-  })
-);
-app.put(
-  "/parkingLots/:id",
-  validateParkingLot,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const parkingLot = await ParkingLot.findByIdAndUpdate(
-      id,
-      { ...req.body.parkingLot },
-      {
-        runValidators: true,
-        new: true,
-      }
-    );
-    await parkingLot.save();
-    res.redirect(`/parkingLots/${id}`);
-  })
-);
-
-app.delete(
-  "/parkingLots/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await ParkingLot.findByIdAndDelete(id);
-    res.redirect("/parkingLots");
-  })
-);
-
-app.post(
-  "/parkingLots/:id/reviews",
-  validateReview,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const parkingLot = await ParkingLot.findById(id);
-    const review = new Review(req.body.review);
-    parkingLot.reviews.push(review);
-    await review.save();
-    await parkingLot.save();
-    res.redirect(`/parkingLots/${parkingLot._id}`);
-  })
-);
-
-app.delete(
-  "/parkingLots/:id/reviews/:reviewId",
-  catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await ParkingLot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/parkingLots/${id}`);
-  })
-);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found ", 404));

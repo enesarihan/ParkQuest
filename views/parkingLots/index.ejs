@@ -1,22 +1,26 @@
 <% layout('layouts/boilerplate') %>
-<h1">All Parking Lots</h1>
+<h1 class="display-6">All Parking Lots</h1>
 <div class="">
-  <a href="/parkingLots/new">Add Parking Lot</a>
+  <a class="btn btn-sm btn-success mb-3" href="/parkingLots/new"
+    ><b>+</b> Add Parking Lot</a
+  >
 </div>
-  <% for( let parks of parkingLots ) { %>
-    <div class="card mb-3">
-      <div class="row">
-        <div class="col-md-4">
-          <img src="<%= parks.image %>" alt="" class="img-fluid">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title"><%= parks.title %></h5>
-            <p class="card-title"><%= parks.description %></p>
-            <p class="card-title text-muted"><b><%= parks.location %></b></p>
-            <a class="btn btn-primary" href="/parkingLots/<%= parks._id %>">View <%= parks.title %></a>
-          </div>
-        </div>
+<% for( let parks of parkingLots ) { %>
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <img src="<%= parks.image %>" alt="" class="img-fluid" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= parks.title %></h5>
+        <p class="card-title"><%= parks.description %></p>
+        <p class="card-title text-muted"><b><%= parks.location %></b></p>
+        <a class="btn btn-primary" href="/parkingLots/<%= parks._id %>"
+          >View <%= parks.title %></a
+        >
       </div>
     </div>
-  <% } %>
+  </div>
+</div>
+<% } %>
