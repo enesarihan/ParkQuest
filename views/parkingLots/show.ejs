@@ -10,7 +10,11 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= parkingLot.location %></li>
         <li class="list-group-item">Price :$<%= parkingLot.price %>/hourly</li>
+        <li class="list-group-item">
+          Submitted by <%= parkingLot.author.username %>
+        </li>
       </ul>
+      <% if (currentUser && parkingLot.author.equals(currentUser._id)) { %>
       <div class="card-body">
         <a class="btn btn-warning" href="/parkingLots/<%= parkingLot._id%>/edit"
           >Edit</a
@@ -23,12 +27,14 @@
           <button class="btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
       <div class="card-footer text-muted">
         <a href="/parkingLots">All Parking Lots</a>
       </div>
     </div>
   </div>
   <div class="col-5">
+    <% if (currentUser) { %>
     <h2 class="display-7">Leave a Review</h2>
     <form
       action="/parkingLots/<%= parkingLot.id %>/reviews"
@@ -61,17 +67,22 @@
       </div>
       <button class="btn btn-success">Submit</button>
     </form>
-    <% for( let review of parkingLot.reviews ) { %>
+    <% } %> <% for( let review of parkingLot.reviews ) { %>
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">Rating : <%= review.rating %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          By <%= review.author.username %>
+        </h6>
         <p class="card-text">Review : <%= review.body %></p>
+        <% if (currentUser && review.author.equals(currentUser._id)) { %>
         <form
           action="/parkingLots/<%= parkingLot._id %>/reviews/<%= review._id %>?_method=DELETE"
           method="post"
         >
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
+        <% } %>
       </div>
     </div>
     <% } %>

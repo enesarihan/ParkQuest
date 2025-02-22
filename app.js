@@ -87,5 +87,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Listening on ${port}!`);
+  console.log(`Server on the fire on ${port}!`);
 });
