@@ -1,5 +1,7 @@
 const ParkingLot = require("../models/parkingLot");
 const { cloudinary } = require("../cloudinary");
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 module.exports.index = async (req, res) => {
   const parkingLots = await ParkingLot.find({});
@@ -11,15 +13,18 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createParkingLot = async (req, res) => {
+  const geoData = await maptilerClient.geocoding.forward(
+    req.body.parkingLot.location,
+    { limit: 1 }
+  );
   const parkingLot = new ParkingLot(req.body.parkingLot);
+  parkingLot.geometry = geoData.features[0].geometry;
   parkingLot.images = req.files.map((f) => ({
     url: f.path,
     filename: f.filename,
   }));
   parkingLot.author = req.user._id;
   await parkingLot.save();
-  console.log(parkingLot.images);
-
   req.flash("success", "Successfully made a new parking lot!");
   res.redirect(`/parkingLots/${parkingLot._id}`);
 };
@@ -78,7 +83,6 @@ module.exports.editParkingLot = async (req, res) => {
       $pull: { images: { filename: { $in: req.body.deleteImages } } },
     });
   }
-  console.log(parkingLot);
 
   req.flash("success", "Successfully edited a parking lot!");
 

@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/stars.css" />
 
 <div class="row">
-  <div class="col-7">
+  <div class="col-6">
     <div id="carouselExampleFade" class="carousel slide carousel-fade">
       <div class="carousel-inner">
         <% parkingLot.images.forEach((img,i) => {%>
@@ -32,6 +32,7 @@
       </button>
     </div>
     <% } %>
+
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title"><%= parkingLot.title %></h5>
@@ -63,7 +64,10 @@
       </div>
     </div>
   </div>
-  <div class="col-5">
+  <div class="col-6">
+    <div class="card mb-3">
+      <div style="height: 300px; width: 100%" id="map"></div>
+    </div>
     <% if (currentUser) { %>
     <h2 class="display-7">Leave a Review</h2>
     <form
@@ -156,3 +160,9 @@
     <% } %>
   </div>
 </div>
+
+<script>
+  const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
+  const parkingLot = <%- JSON.stringify(parkingLot) %>
+</script>
+<script src="/js/showPageMap.js"></script>

@@ -9,7 +9,15 @@
 <div class="card mb-3">
   <div class="row">
     <div class="col-md-4">
+      <% if (parks.images.length) { %>
       <img src="<%= parks.images[0].url %>" alt="" class="img-fluid" />
+      <% } else { %>
+      <img
+        src="https://res.cloudinary.com/de9jr3gih/image/upload/v1740499651/ParkQuest/qz1tftkhg7e6dgycbedd.jpg"
+        alt=""
+        class="img-fluid"
+      />
+      <% } %>
     </div>
     <div class="col-md-8">
       <div class="card-body">
