@@ -23,10 +23,23 @@ const seedDB = async () => {
       author: "67b8ce56b5ca59b422963eea",
       location: `${cities[random1000].city},${cities[random1000].state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
-      image: "https://picsum.photos/400?random=${Math.random()}",
       description:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eveniet laudantium optio voluptas modi. Similique quae provident sint veniam quo quia earum neque architecto ullam voluptate harum, totam, cum suscipit!",
       price: price,
+      images: [
+        {
+          url: "https://res.cloudinary.com/de9jr3gih/image/upload/v1740499651/ParkQuest/qz1tftkhg7e6dgycbedd.jpg",
+          filename: "ParkQuest/qz1tftkhg7e6dgycbedd",
+        },
+        {
+          url: "https://res.cloudinary.com/de9jr3gih/image/upload/v1740499654/ParkQuest/ks8wkuo0fywpf1v9lwl4.jpg",
+          filename: "ParkQuest/ks8wkuo0fywpf1v9lwl4",
+        },
+        {
+          url: "https://res.cloudinary.com/de9jr3gih/image/upload/v1740499659/ParkQuest/vdr0dlppqbaoziy9it5r.jpg",
+          filename: "ParkQuest/vdr0dlppqbaoziy9it5r",
+        },
+      ],
     });
     await randomParks.save();
   }

@@ -3,12 +3,16 @@ const router = express.Router();
 const parkingLots = require("../controllers/parkingLots");
 const catchAsync = require("../utils/catchAsync");
 const { isLoggedIn, validateParkingLot, isAuthor } = require("../middleware");
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 
 router
   .route("/")
   .get(catchAsync(parkingLots.index))
   .post(
     isLoggedIn,
+    upload.array("image"),
     validateParkingLot,
     catchAsync(parkingLots.createParkingLot)
   );
@@ -21,6 +25,7 @@ router
   .put(
     isLoggedIn,
     isAuthor,
+    upload.array("image"),
     validateParkingLot,
     catchAsync(parkingLots.editParkingLot)
   )

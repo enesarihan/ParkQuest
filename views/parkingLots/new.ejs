@@ -2,7 +2,13 @@
 <div class="row">
   <h1 class="text-center">New Campground</h1>
   <div class="col-6 offset-3">
-    <form action="/parkingLots" method="post" novalidate class="validated-form">
+    <form
+      action="/parkingLots"
+      method="post"
+      novalidate
+      class="validated-form"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -21,17 +27,6 @@
           type="text"
           id="location"
           name="parkingLot[location]"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="mb-3">
-        <label for="image" class="form-label">Image Url</label>
-        <input
-          class="form-control"
-          type="text"
-          id="image"
-          name="parkingLot[image]"
           required
         />
         <div class="valid-feedback">Looks good!</div>
@@ -60,6 +55,16 @@
           />
           <div class="valid-feedback">Looks good!</div>
         </div>
+      </div>
+      <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Add Image</label>
+        <input
+          class="form-control"
+          type="file"
+          id="formFileMultiple"
+          name="image"
+          multiple
+        />
       </div>
       <div class="mb-3 align-center justify-center mx-auto">
         <button class="btn btn-success">Add Parking Lot</button>

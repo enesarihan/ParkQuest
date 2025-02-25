@@ -7,6 +7,7 @@
       method="post"
       novalidate
       class="validated-form"
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -28,18 +29,6 @@
           id="location"
           name="parkingLot[location]"
           value="<%= parkingLot.location %>"
-          required
-        />
-        <div class="valid-feedback">Looks good !</div>
-      </div>
-      <div class="mb-3">
-        <label for="image" class="form-label">Image Url</label>
-        <input
-          class="form-control"
-          type="text"
-          id="image"
-          name="parkingLot[image]"
-          value="<%= parkingLot.image %>"
           required
         />
         <div class="valid-feedback">Looks good !</div>
@@ -72,8 +61,32 @@
           <div class="valid-feedback">Looks good !</div>
         </div>
       </div>
+      <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Add More Image</label>
+        <input
+          class="form-control"
+          type="file"
+          id="formFileMultiple"
+          name="image"
+          multiple
+        />
+      </div>
+      <div class="mb-3">
+        <% parkingLot.images.forEach(function(img,i){ %>
+        <img src="<%= img.thumbnail %>" alt="" class="img-thumbnail" />
+        <div class="form-check-inline">
+          <input
+            type="checkbox"
+            id="image-<%= i %>"
+            name="deleteImages[]"
+            value="<%= img.filename %>"
+          />
+        </div>
+        <label for="image-<%= i %>">Delete?</label>
+        <% }) %>
+      </div>
       <div class="mb-3 align-center justify-center mx-auto">
-        <button class="btn btn-info">Edit Parking Lot</button>
+        <button class="btn btn-info">Update Parking Lot</button>
       </div>
     </form>
     <a href="/parkingLots">All Parking Lots</a>
