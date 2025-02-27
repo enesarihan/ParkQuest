@@ -1,75 +1,81 @@
 <% layout('layouts/boilerplate') %>
 <div class="row">
   <h1 class="text-center">New Campground</h1>
-  <div class="col-6 offset-3">
-    <form
-      action="/parkingLots"
-      method="post"
-      novalidate
-      class="validated-form"
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input
-          class="form-control"
-          type="text"
-          id="title"
-          name="parkingLot[title]"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
+  <div class="col-md-6 offset-md-3">
+    <div class="card shadow mb-3">
+      <div class="card-body">
+        <form
+          action="/parkingLots"
+          method="post"
+          novalidate
+          class="validated-form"
+          enctype="multipart/form-data"
+        >
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              class="form-control"
+              type="text"
+              id="title"
+              name="parkingLot[title]"
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="mb-3">
+            <label for="title" class="form-label">Location</label>
+            <input
+              class="form-control"
+              type="text"
+              id="location"
+              name="parkingLot[location]"
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              name="parkingLot[description]"
+              id="description"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label"
+              >Parking Lot Price Hourly</label
+            >
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input
+                id="price"
+                name="parkingLot[price]"
+                type="text"
+                class="form-control"
+                placeholder="0.00"
+                aria-label="price"
+                aria-describedby="basic-addon1"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="formFileMultiple" class="form-label">Add Image</label>
+            <input
+              class="form-control"
+              type="file"
+              id="formFileMultiple"
+              name="image"
+              multiple
+            />
+          </div>
+          <div class="mb-3 align-center justify-center mx-auto">
+            <button class="btn btn-success">Add Parking Lot</button>
+          </div>
+        </form>
+        <a href="/parkingLots">All Parking Lots</a>
       </div>
-      <div class="mb-3">
-        <label for="title" class="form-label">Location</label>
-        <input
-          class="form-control"
-          type="text"
-          id="location"
-          name="parkingLot[location]"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea
-          name="parkingLot[description]"
-          id="description"
-          class="form-control"
-        ></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="price" class="form-label">Parking Lot Price Hourly</label>
-        <div class="input-group">
-          <span class="input-group-text" id="basic-addon1">$</span>
-          <input
-            id="price"
-            name="parkingLot[price]"
-            type="text"
-            class="form-control"
-            placeholder="0.00"
-            aria-label="price"
-            aria-describedby="basic-addon1"
-            required
-          />
-          <div class="valid-feedback">Looks good!</div>
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="formFileMultiple" class="form-label">Add Image</label>
-        <input
-          class="form-control"
-          type="file"
-          id="formFileMultiple"
-          name="image"
-          multiple
-        />
-      </div>
-      <div class="mb-3 align-center justify-center mx-auto">
-        <button class="btn btn-success">Add Parking Lot</button>
-      </div>
-    </form>
-    <a href="/parkingLots">All Parking Lots</a>
+    </div>
   </div>
 </div>
