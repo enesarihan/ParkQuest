@@ -1,16 +1,21 @@
 <% layout('layouts/boilerplate') %>
 <h1 class="display-6">All Parking Lots</h1>
-<div class="">
+<div class="" style="width: 100%; height: 500px" id="map"></div>
+<div class="mt-3">
   <a class="btn btn-sm btn-success mb-3" href="/parkingLots/new"
     ><b>+</b> Add Parking Lot</a
   >
 </div>
 <% for( let parks of parkingLots ) { %>
-<div class="card mb-3">
+<div class="card mb-3 shadow">
   <div class="row">
     <div class="col-md-4">
       <% if (parks.images.length) { %>
-      <img src="<%= parks.images[0].url %>" alt="" class="img-fluid" />
+      <img
+        src="<%= parks.images[0].url %>"
+        alt=""
+        class="img-fluid mw-100 rounded"
+      />
       <% } else { %>
       <img
         src="https://res.cloudinary.com/de9jr3gih/image/upload/v1740499651/ParkQuest/qz1tftkhg7e6dgycbedd.jpg"
@@ -32,3 +37,9 @@
   </div>
 </div>
 <% } %>
+
+<script>
+  const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+  const parkingLots = {features: <%- JSON.stringify(parkingLots) %>}
+</script>
+<script src="/js/clusterMap.js"></script>

@@ -14,33 +14,44 @@ ImageSchema.virtual("hero").get(function () {
   return this.url.replace("/upload", "/upload/w_500,h_400");
 });
 
-const parkingLotSchema = new Schema({
-  title: String,
-  images: [ImageSchema],
-  geometry: {
-    type: {
-      type: String,
-      enum: ["Point"],
-      required: true,
+const opts = { toJSON: { virtuals: true } };
+
+const parkingLotSchema = new Schema(
+  {
+    title: String,
+    images: [ImageSchema],
+    geometry: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
-  price: Number,
-  description: String,
-  location: String,
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-  reviews: [
-    {
+    price: Number,
+    description: String,
+    location: String,
+    author: {
       type: Schema.Types.ObjectId,
-      ref: "Review",
+      ref: "User",
     },
-  ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+  },
+  opts
+);
+
+parkingLotSchema.virtual("properties.popUpMarkup").get(function () {
+  return `<strong><a href="/parkingLots/${this._id}">${this.title}</a><strong>
+  <p>Price : $${this.price}</p>
+  <p>Location : ${this.location}</p>`;
 });
 
 parkingLotSchema.post("findOneAndDelete", async (doc) => {
